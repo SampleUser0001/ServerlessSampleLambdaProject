@@ -1,14 +1,27 @@
 
-service: ServerlessSampleLambdaProject
 frameworkVersion: '2'
+
+service: ServerlessSampleLambdaProject
 
 provider:
   name: aws
   runtime: python3.8
+  stage: ${opt:stage}
   lambdaHashingVersion: 20201221
   region: ap-northeast-1
-  
+  logRetentionInDays: 1
+  environment:
+    STAGE: ${opt:stage}
+
+plugins:
+  - serverless-plugin-conditional-functions
+
+custom:
+  hello_enabled:
+    stg: true
+    dev: false
 
 functions:
   hello:
     handler: handler.hello
+    enabled: ${self:custom.hello_enabled.${opt:stage}}
