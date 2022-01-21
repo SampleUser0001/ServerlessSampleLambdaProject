@@ -18,10 +18,15 @@ plugins:
 
 custom:
   hello_enabled:
-    stg: true
-    dev: false
+    stg: false
+    dev: true
+  params: ${file(./serverless-${opt:stage}.yml)}
 
 functions:
   hello:
+    enabled: '"${self:provider.stage}" == "dev"'
     handler: handler.hello
-    enabled: ${self:custom.hello_enabled.${opt:stage}}
+    events:
+      - cloudwatchLog:
+          logGroup: /aws/serverless_sample_${opt:stage}
+          filter: 'DEBUG'

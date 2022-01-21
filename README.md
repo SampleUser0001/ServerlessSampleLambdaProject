@@ -14,3 +14,7 @@ sls deploy -v --stage dev
 sls remove -v --stage stg
 sls remove -v --stage dev
 ```
+
+## 備考
+
+- functions-関数名-enabledがfalseの関数は、デプロイされないだけでなく、eventsも設定されない。
